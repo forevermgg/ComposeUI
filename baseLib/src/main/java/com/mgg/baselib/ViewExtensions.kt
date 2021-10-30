@@ -78,7 +78,6 @@ class Binder<in T, out V : View>(@IdRes private val viewId: Int, private val fin
         this.parentProvider = parentProvider
         return this
     }
-
 }
 
 /** Provides a view-binding delegate inside classes extending [Dialog]. See [Binder] for more information. */

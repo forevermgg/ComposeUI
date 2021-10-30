@@ -31,7 +31,6 @@ import com.mgg.composeui.R
 import com.mgg.composeui.ui.theme.Purple200
 import com.mgg.composeui.ui.theme.Purple500
 
-
 class ComposeLayoutFragment : Fragment() {
     private var param1: Int by argument()
     private var param2: String by argument()
@@ -47,7 +46,8 @@ class ComposeLayoutFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // return inflater.inflate(R.layout.compose_layout_fragment, container, false)
@@ -66,7 +66,6 @@ class ComposeLayoutFragment : Fragment() {
         super.onAttach(context)
         viewModel = ViewModelProvider(this).get(ComposeLayoutModel::class.java)
     }
-
 
     @Preview(showBackground = true)
     @Composable

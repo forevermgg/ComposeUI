@@ -51,7 +51,6 @@ class MainActivity : ComponentActivity() {
         startActivity(Intent(this, ComposeTextActivity::class.java))
     }
 
-
     private fun startComposeLayoutActivity() {
         isMainProcess()
         startActivity(Intent(this, ComposeLayoutActivity::class.java))
@@ -66,7 +65,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DefaultPreview() {
         ComposeUITheme {
-            //Greeting("Android")
+            // Greeting("Android")
             LazyColumn(
                 Modifier.padding(
                     start = 10.dp,
@@ -149,7 +148,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
 
     @Composable
     fun CustomView() {

@@ -18,7 +18,8 @@ class ViewModelTestFragment : Fragment() {
     private lateinit var viewModel: ViewModelTestViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         return inflater.inflate(R.layout.view_model_test_fragment, container, false)
@@ -38,5 +39,4 @@ class ViewModelTestFragment : Fragment() {
             }
         }
     }
-
 }

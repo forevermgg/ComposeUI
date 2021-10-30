@@ -48,7 +48,8 @@ class ComposeTextFragment : Fragment() {
     // private lateinit var viewModel: ComposeTextViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // return inflater.inflate(R.layout.compose_text_fragment, container, false)
@@ -76,7 +77,6 @@ class ComposeTextFragment : Fragment() {
         // viewModel = ViewModelProvider(this).get(ComposeTextViewModel::class.java)
         // TODO: Use the ViewModel
     }
-
 
     @Preview(showBackground = true)
     @Composable
@@ -277,7 +277,6 @@ class ComposeTextFragment : Fragment() {
             label = { Text("Label") }
         )
     }
-
 
     @Composable
     fun SimpleFilledTextFieldSample() {
