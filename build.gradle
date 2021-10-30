@@ -1,0 +1,86 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        kotlin_version = '1.5.21'
+    }
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
+        maven { url "https://mirrors.tencent.com/repository/maven/tencent_public" }
+        maven { url "https://mirrors.tencent.com/repository/maven/thirdparty" }
+        maven { url 'https://mirrors.tencent.com/repository/maven/thirdparty-snapshots' }
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
+        maven { url "https://jitpack.io" }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.16.0" // 在这里添加 Detekt 依赖
+        classpath "io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+plugins {
+    id("io.gitlab.arturbosch.detekt").version("1.16.0")
+}
+/*allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
+        maven { url "https://mirrors.tencent.com/repository/maven/tencent_public" }
+        maven { url "https://mirrors.tencent.com/repository/maven/thirdparty" }
+        maven { url 'https://mirrors.tencent.com/repository/maven/thirdparty-snapshots' }
+        maven { url 'http://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
+        maven { url "https://jitpack.io" }
+    }
+}*/
+detekt {
+    buildUponDefaultConfig = true // preconfigure defaults
+    allRules = false // activate all available (even unstable) rules.
+    config = files("config/detekt.yml") // 指定采用的规则集文件
+    reports {
+        html.enabled = true // observe findings in your browser with structure and code snippets
+        xml.enabled = true // checkstyle like format mainly for integrations like Jenkins
+        txt.enabled = true // similar to the console output, contains issue signature to manually edit baseline files
+        sarif.enabled = true // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with Github Code Scanning
+    }
+    autoCorrect = true // 自动格式化代码的总开关
+}
+tasks.detekt.jvmTarget = "1.8"
+subprojects {
+    apply plugin: "io.gitlab.arturbosch.detekt"
+    tasks.detekt.jvmTarget = "1.8"
+    detekt {
+        config = files("$rootDir/config/detekt/detekt_config.yml")
+        reports {
+            html.enabled = true
+        }
+    }
+}
+
+subprojects {
+    apply plugin: "io.gitlab.arturbosch.detekt"
+
+    dependencies {
+        detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0"
+    }
+
+    // 专门用于 format 的task
+    task detektFormat(type: io.gitlab.arturbosch.detekt.Detekt) {
+        description = "Reformat kotlin code."
+        // config.setFrom(files("$rootDir/config/detekt/detekt_${detekt_version}_format.yml"))
+        setSource(files("$projectDir/src/main"))
+        autoCorrect = true
+        include("**/*.kt")
+    }
+}
+
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
