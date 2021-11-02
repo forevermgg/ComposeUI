@@ -1,9 +1,23 @@
 package com.mgg.baselib
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+
+@Suppress("unused")
+fun Activity.isTaskRoot(): Boolean {
+    if (!isTaskRoot) {
+        val intent = intent
+        val action = intent.action
+        if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN == action) {
+            finish()
+            return false
+        }
+    }
+    return true
+}
 
 @Suppress("unused")
 fun Activity.hideKeyboard() {
