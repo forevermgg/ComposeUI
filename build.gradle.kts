@@ -13,12 +13,46 @@ buildscript {
     dependencies {
         classpath(Libs.Plugins.buildGradle)
         classpath(Libs.Plugins.kotlinGradle)
-        classpath(Libs.Plugins.detekt) // 在这里添加 Detekt 依赖
+        classpath(Libs.Plugins.detekt)
         classpath(Libs.Plugins.detektFormatting)
         classpath(Libs.Plugins.ktlintGradle)
     }
 }
+plugins {
+    id("io.gitlab.arturbosch.detekt").version(Versions.detektVersion)
+}
 
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "1.8"
+}
+
+tasks.register<io.gitlab.arturbosch.detekt.Detekt>("myDetekt") {
+    description = "Runs a custom detekt build."
+    setSource(files("src/main/kotlin", "src/test/kotlin"))
+    config.setFrom(files("$rootDir/config.yml"))
+    debug = true
+    reports {
+        xml {
+            destination = file("build/reports/mydetekt.xml")
+        }
+        html.destination = file("build/reports/mydetekt.html")
+    }
+    include("**/*.kt")
+    include("**/*.kts")
+    exclude("resources/")
+    exclude("build/")
+}
+tasks.named("check").configure {
+    this.setDependsOn(this.dependsOn.filterNot {
+        it is TaskProvider<*> && it.name == "detekt"
+    })
+}
 tasks.register(Tasks.clean, Delete::class) {
     delete(rootProject.buildDir)
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    // include("**/special/package/**") // only analyze a sub package inside src/main/kotlin
+    exclude("**/special/package/internal/**") // but exclude our legacy internal package
 }

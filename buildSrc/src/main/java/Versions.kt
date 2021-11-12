@@ -20,5 +20,5 @@ object Versions {
     const val mmkv = "1.2.7"
     const val lottieVersion = "4.1.0"
     const val mavericksVersion = "2.4.0"
-    const val detektVersion = "1.16.0"
+    const val detektVersion = "1.19.0-RC1"
 }
