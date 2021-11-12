@@ -132,7 +132,9 @@ class ComposeLayoutFragment : Fragment() {
         Card(
             shape = RoundedCornerShape(14.dp),
             backgroundColor = Color.White,
-            modifier = Modifier.padding(10.dp).width(100.dp)
+            modifier = Modifier
+                .padding(10.dp)
+                .width(100.dp)
         ) {
             Row(modifier = Modifier.padding(20.dp)) {
                 Column {
