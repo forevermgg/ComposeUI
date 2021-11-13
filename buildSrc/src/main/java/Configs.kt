@@ -1,4 +1,5 @@
 import com.android.build.gradle.BaseExtension
+import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -17,6 +18,7 @@ fun Project.kotlinCompileOptions() = tasks.withType<KotlinCompile>().configureEa
 }
 
 fun BaseExtension.defaultConfig() {
+    // compileSdk = AndroidConfig.sdkVersion
     compileSdkVersion(AndroidConfig.sdkVersion)
     defaultConfig {
         minSdk = AndroidConfig.minSdkVersion

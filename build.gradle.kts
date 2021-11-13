@@ -17,20 +17,11 @@ buildscript {
         classpath(Libs.Plugins.detekt)
         classpath(Libs.Plugins.detektFormatting)
         classpath(Libs.Plugins.ktlintGradle)
-        classpath(Libs.Plugins.benManesGradleVersions)
     }
 }
 
 plugins {
     id("io.gitlab.arturbosch.detekt").version(Versions.detektVersion)
-}
-
-allprojects {
-    apply("com.github.ben-manes.versions")
-
-    tasks.named("dependencyUpdates").configure {
-        // configure the task, for example wrt. resolution strategies
-    }
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
