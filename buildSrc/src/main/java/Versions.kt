@@ -21,4 +21,5 @@ object Versions {
     const val lottieVersion = "4.1.0"
     const val mavericksVersion = "2.4.0"
     const val detektVersion = "1.19.0-RC1"
+    const val benManesGradleVersionsPluginVersion = "0.39.0"
 }

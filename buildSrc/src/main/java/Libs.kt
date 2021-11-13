@@ -6,6 +6,7 @@ object Libs {
         const val ktlintGradle = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.ktlint}"
         const val detekt = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${Versions.detektVersion}"
         const val detektFormatting = "io.gitlab.arturbosch.detekt:detekt-formatting:${Versions.detektVersion}"
+        const val benManesGradleVersions = "com.github.ben-manes:gradle-versions-plugin:${Versions.benManesGradleVersionsPluginVersion}"
     }
 
     object AndroidX {
