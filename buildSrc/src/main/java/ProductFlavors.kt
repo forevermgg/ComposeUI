@@ -4,10 +4,10 @@
  */
 
 object FlavorDimensions {
-  const val FREE = "free"
+    const val FREE = "free"
 }
 
 object ProductFlavors {
-  const val FREE = "free"
-  const val NON_FREE = "nonFree"
+    const val FREE = "free"
+    const val NON_FREE = "nonFree"
 }

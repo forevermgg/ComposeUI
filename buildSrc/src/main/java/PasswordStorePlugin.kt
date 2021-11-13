@@ -24,59 +24,59 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class PasswordStorePlugin : Plugin<Project> {
 
-  override fun apply(project: Project) {
-    project.configureForAllProjects()
+    override fun apply(project: Project) {
+        project.configureForAllProjects()
 
-    if (project.isRoot) {
-      project.configureForRootProject()
+        if (project.isRoot) {
+            project.configureForRootProject()
+        }
+
+        project.plugins.all {
+            when (this) {
+                is JavaPlugin, is JavaLibraryPlugin -> {
+                    project.tasks.withType<JavaCompile> {
+                        options.compilerArgs.add("-Xlint:unchecked")
+                        options.isDeprecation = true
+                        options.isWarnings = true
+                    }
+                }
+                is LibraryPlugin -> {
+                    project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+                    project.configureExplicitApi()
+                    project.configureSlimTests()
+                }
+                is AppPlugin -> {
+                    project
+                        .extensions
+                        .getByType<BaseAppModuleExtension>()
+                        .configureAndroidApplicationOptions(project)
+                    project.extensions.getByType<BaseAppModuleExtension>().configureBuildSigning(project)
+                    project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
+                    project.configureSlimTests()
+                }
+                is SigningPlugin -> {
+                    project.extensions.getByType<SigningExtension>().configureBuildSigning()
+                }
+                is KotlinPluginWrapper -> {
+                    project.configureExplicitApi()
+                }
+                is Kapt3GradleSubplugin -> {
+                    project.configureKapt()
+                }
+            }
+        }
     }
 
-    project.plugins.all {
-      when (this) {
-        is JavaPlugin, is JavaLibraryPlugin -> {
-          project.tasks.withType<JavaCompile> {
-            options.compilerArgs.add("-Xlint:unchecked")
-            options.isDeprecation = true
-            options.isWarnings = true
-          }
+    private fun Project.configureExplicitApi() {
+        val project = this
+        tasks.withType<KotlinCompile> {
+            if (!name.contains("test", ignoreCase = true)) {
+                project.configure<KotlinProjectExtension> { explicitApi() }
+                kotlinOptions { freeCompilerArgs += listOf("-Xexplicit-api=strict") }
+            }
         }
-        is LibraryPlugin -> {
-          project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
-          project.configureExplicitApi()
-          project.configureSlimTests()
-        }
-        is AppPlugin -> {
-          project
-            .extensions
-            .getByType<BaseAppModuleExtension>()
-            .configureAndroidApplicationOptions(project)
-          project.extensions.getByType<BaseAppModuleExtension>().configureBuildSigning(project)
-          project.extensions.getByType<TestedExtension>().configureCommonAndroidOptions()
-          project.configureSlimTests()
-        }
-        is SigningPlugin -> {
-          project.extensions.getByType<SigningExtension>().configureBuildSigning()
-        }
-        is KotlinPluginWrapper -> {
-          project.configureExplicitApi()
-        }
-        is Kapt3GradleSubplugin -> {
-          project.configureKapt()
-        }
-      }
     }
-  }
-
-  private fun Project.configureExplicitApi() {
-    val project = this
-    tasks.withType<KotlinCompile> {
-      if (!name.contains("test", ignoreCase = true)) {
-        project.configure<KotlinProjectExtension> { explicitApi() }
-        kotlinOptions { freeCompilerArgs += listOf("-Xexplicit-api=strict") }
-      }
-    }
-  }
 }
 
 private val Project.isRoot
-  get() = this == this.rootProject
+    get() = this == this.rootProject

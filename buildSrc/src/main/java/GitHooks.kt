@@ -21,24 +21,26 @@ import org.gradle.api.tasks.TaskAction
 
 @CacheableTask
 abstract class GitHooks : DefaultTask() {
-  @get:Input abstract val hookScript: Property<String>
+    @get:Input
+    abstract val hookScript: Property<String>
 
-  @get:OutputFile abstract val hookOutput: Property<File>
+    @get:OutputFile
+    abstract val hookOutput: Property<File>
 
-  @TaskAction
-  fun install() {
-    hookOutput.get().writeText(hookScript.get())
-    Files.setPosixFilePermissions(
-      hookOutput.get().toPath(),
-      setOf(
-        OWNER_READ,
-        OWNER_WRITE,
-        OWNER_EXECUTE,
-        GROUP_READ,
-        GROUP_EXECUTE,
-        OTHERS_READ,
-        OTHERS_EXECUTE,
-      )
-    )
-  }
+    @TaskAction
+    fun install() {
+        hookOutput.get().writeText(hookScript.get())
+        Files.setPosixFilePermissions(
+            hookOutput.get().toPath(),
+            setOf(
+                OWNER_READ,
+                OWNER_WRITE,
+                OWNER_EXECUTE,
+                GROUP_READ,
+                GROUP_EXECUTE,
+                OTHERS_READ,
+                OTHERS_EXECUTE,
+            )
+        )
+    }
 }

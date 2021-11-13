@@ -20,117 +20,117 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
  * `buildscript` block in the top-level build.gradle.kts file.
  */
 internal fun Project.configureForRootProject() {
-  tasks.withType<Wrapper> {
-    gradleVersion = "7.2"
-    distributionSha256Sum = "f581709a9c35e9cb92e16f585d2c4bc99b2b1a5f85d2badbd3dc6bff59e1e6dd"
-  }
-  configureBinaryCompatibilityValidator()
-  tasks.register<GitHooks>("installGitHooks") {
-    val projectDirectory = layout.projectDirectory
-    hookScript.set(projectDirectory.file("scripts/pre-push-hook.sh").asFile.readText())
-    hookOutput.set(projectDirectory.file(".git/hooks/pre-push").asFile)
-  }
+    tasks.withType<Wrapper> {
+        gradleVersion = "7.2"
+        distributionSha256Sum = "f581709a9c35e9cb92e16f585d2c4bc99b2b1a5f85d2badbd3dc6bff59e1e6dd"
+    }
+    configureBinaryCompatibilityValidator()
+    tasks.register<GitHooks>("installGitHooks") {
+        val projectDirectory = layout.projectDirectory
+        hookScript.set(projectDirectory.file("scripts/pre-push-hook.sh").asFile.readText())
+        hookOutput.set(projectDirectory.file(".git/hooks/pre-push").asFile)
+    }
 }
 
 /** Configure all projects including the root project */
 internal fun Project.configureForAllProjects() {
-  tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-      allWarningsAsErrors = true
-      jvmTarget = JavaVersion.VERSION_11.toString()
-      freeCompilerArgs = freeCompilerArgs + additionalCompilerArgs
-      languageVersion = "1.5"
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            allWarningsAsErrors = true
+            jvmTarget = JavaVersion.VERSION_11.toString()
+            freeCompilerArgs = freeCompilerArgs + additionalCompilerArgs
+            languageVersion = "1.5"
+        }
     }
-  }
-  tasks.withType<Test>().configureEach {
-    maxParallelForks = Runtime.getRuntime().availableProcessors() * 2
-    testLogging { events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED) }
-    outputs.upToDateWhen { false }
-  }
+    tasks.withType<Test>().configureEach {
+        maxParallelForks = Runtime.getRuntime().availableProcessors() * 2
+        testLogging { events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED) }
+        outputs.upToDateWhen { false }
+    }
 }
 
 /** Checks if we're building a snapshot */
 @Suppress("UnstableApiUsage")
 fun Project.isSnapshot(): Boolean {
-  with(project.providers) {
-    val workflow = environmentVariable("GITHUB_WORKFLOW").forUseAtConfigurationTime()
-    val snapshot = environmentVariable("SNAPSHOT").forUseAtConfigurationTime()
-    return workflow.isPresent && snapshot.isPresent
-  }
+    with(project.providers) {
+        val workflow = environmentVariable("GITHUB_WORKFLOW").forUseAtConfigurationTime()
+        val snapshot = environmentVariable("SNAPSHOT").forUseAtConfigurationTime()
+        return workflow.isPresent && snapshot.isPresent
+    }
 }
 
 /** Apply configurations for app module */
 @Suppress("UnstableApiUsage")
 internal fun BaseAppModuleExtension.configureAndroidApplicationOptions(project: Project) {
-  val minifySwitch =
-    project.providers.environmentVariable("DISABLE_MINIFY").forUseAtConfigurationTime()
+    val minifySwitch =
+        project.providers.environmentVariable("DISABLE_MINIFY").forUseAtConfigurationTime()
 
-  adbOptions.installOptions("--user 0")
+    adbOptions.installOptions("--user 0")
 
-  buildFeatures {
-    viewBinding = true
-    buildConfig = true
-  }
-
-  flavorDimensions.add(FlavorDimensions.FREE)
-  productFlavors {
-    register(ProductFlavors.FREE) {}
-    register(ProductFlavors.NON_FREE) {}
-  }
-
-  buildTypes {
-    named(BuildType.RELEASE.name) {
-      isMinifyEnabled = !minifySwitch.isPresent
-      setProguardFiles(
-        listOf(
-          "proguard-android-optimize.txt",
-          "proguard-rules.pro",
-          "proguard-rules-missing-classes.pro",
-        )
-      )
-      buildConfigField("boolean", "ENABLE_DEBUG_FEATURES", "${project.isSnapshot()}")
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
-    named(BuildType.DEBUG.name) {
-      applicationIdSuffix = ".debug"
-      versionNameSuffix = "-debug"
-      isMinifyEnabled = false
-      buildConfigField("boolean", "ENABLE_DEBUG_FEATURES", "true")
+
+    flavorDimensions.add(FlavorDimensions.FREE)
+    productFlavors {
+        register(ProductFlavors.FREE) {}
+        register(ProductFlavors.NON_FREE) {}
     }
-  }
+
+    buildTypes {
+        named(BuildType.RELEASE.name) {
+            isMinifyEnabled = !minifySwitch.isPresent
+            setProguardFiles(
+                listOf(
+                    "proguard-android-optimize.txt",
+                    "proguard-rules.pro",
+                    "proguard-rules-missing-classes.pro",
+                )
+            )
+            buildConfigField("boolean", "ENABLE_DEBUG_FEATURES", "${project.isSnapshot()}")
+        }
+        named(BuildType.DEBUG.name) {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            isMinifyEnabled = false
+            buildConfigField("boolean", "ENABLE_DEBUG_FEATURES", "true")
+        }
+    }
 }
 
 /** Apply baseline configurations for all Android projects (Application and Library). */
 @Suppress("UnstableApiUsage")
 internal fun TestedExtension.configureCommonAndroidOptions() {
-  setCompileSdkVersion(31)
+    setCompileSdkVersion(31)
 
-  defaultConfig {
-    minSdk = 23
-    targetSdk = 29
-  }
+    defaultConfig {
+        minSdk = 23
+        targetSdk = 29
+    }
 
-  sourceSets {
-    named("main") { java.srcDirs("src/main/kotlin") }
-    named("test") { java.srcDirs("src/test/kotlin") }
-    named("androidTest") { java.srcDirs("src/androidTest/kotlin") }
-  }
+    sourceSets {
+        named("main") { java.srcDirs("src/main/kotlin") }
+        named("test") { java.srcDirs("src/test/kotlin") }
+        named("androidTest") { java.srcDirs("src/androidTest/kotlin") }
+    }
 
-  packagingOptions {
-    resources.excludes.add("**/*.version")
-    resources.excludes.add("**/*.txt")
-    resources.excludes.add("**/*.kotlin_module")
-    resources.excludes.add("**/plugin.properties")
-    resources.excludes.add("**/META-INF/AL2.0")
-    resources.excludes.add("**/META-INF/LGPL2.1")
-  }
+    packagingOptions {
+        resources.excludes.add("**/*.version")
+        resources.excludes.add("**/*.txt")
+        resources.excludes.add("**/*.kotlin_module")
+        resources.excludes.add("**/plugin.properties")
+        resources.excludes.add("**/META-INF/AL2.0")
+        resources.excludes.add("**/META-INF/LGPL2.1")
+    }
 
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-  }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
 
-  testOptions {
-    animationsDisabled = true
-    unitTests.isReturnDefaultValues = true
-  }
+    testOptions {
+        animationsDisabled = true
+        unitTests.isReturnDefaultValues = true
+    }
 }

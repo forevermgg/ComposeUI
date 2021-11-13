@@ -9,23 +9,23 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 
 fun Project.configureSpotless() {
-  apply(plugin = "com.diffplug.spotless")
-  configure<SpotlessExtension> {
-    kotlin {
-      ktfmt().googleStyle()
-      target("**/*.kt")
-      targetExclude("**/build/")
+    apply(plugin = "com.diffplug.spotless")
+    configure<SpotlessExtension> {
+        kotlin {
+            ktfmt().googleStyle()
+            target("**/*.kt")
+            targetExclude("**/build/")
+        }
+        kotlinGradle {
+            ktfmt().googleStyle()
+            target("**/*.kts")
+        }
+        format("xml") {
+            target("**/*.xml")
+            targetExclude("**/build/", ".idea/")
+            trimTrailingWhitespace()
+            indentWithSpaces()
+            endWithNewline()
+        }
     }
-    kotlinGradle {
-      ktfmt().googleStyle()
-      target("**/*.kts")
-    }
-    format("xml") {
-      target("**/*.xml")
-      targetExclude("**/build/", ".idea/")
-      trimTrailingWhitespace()
-      indentWithSpaces()
-      endWithNewline()
-    }
-  }
 }
