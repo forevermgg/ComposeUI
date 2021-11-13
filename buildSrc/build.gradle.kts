@@ -2,7 +2,7 @@ plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
     `kotlin-dsl-precompiled-script-plugins`
-    kotlin("jvm") version "1.5.31"
+    kotlin("jvm") version "1.5.21"
 }
 
 gradlePlugin {
@@ -58,8 +58,8 @@ dependencies {
     compileOnly(gradleApi())
     // implementation("com.android.tools.build:gradle-api:7.0.3")
     // implementation("com.android.tools.build:gradle:7.0.3")
-    // implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
-    // implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
+    // implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
+    // implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.21")
     implementation("com.android.tools.build:gradle:7.1.0-alpha12")
     implementation("com.diffplug.spotless:spotless-plugin-gradle:5.16.0")
     implementation("com.google.dagger:hilt-android-gradle-plugin:2.40.1")
@@ -68,6 +68,6 @@ dependencies {
     implementation("com.vdurmont:semver4j:3.1.0")
     implementation("de.undercouch:gradle-download-task:4.1.2")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.5.31")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
     implementation("org.jetbrains.kotlinx:binary-compatibility-validator:0.6.0")
 }
