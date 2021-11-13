@@ -5,7 +5,6 @@ plugins {
 android {
     defaultConfig()
 }
-
 dependencies {
     kotlin()
     baseAndroid()

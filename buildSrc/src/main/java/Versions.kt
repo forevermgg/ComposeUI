@@ -1,10 +1,10 @@
 object Versions {
     const val kotlin = "1.5.31"
-    const val gradle = "7.0.3"
+    const val gradle = "7.0.1"
     const val coroutines = "1.5.2"
     const val ktx = "1.6.0"
     const val ktxFragment = "1.3.6"
-    const val ktxViewModel = "2.3.1"
+    const val ktxViewModel = "2.4.0"
     const val ktxLifecycleRuntime = "2.4.0-alpha03"
     const val androidXJunit = "1.1.2"
     const val espresso = "3.3.0"
