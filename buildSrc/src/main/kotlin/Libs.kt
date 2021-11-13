@@ -2,6 +2,7 @@ object Libs {
 
     object Plugins {
         const val buildGradle = "com.android.tools.build:gradle:${Versions.gradle}"
+        const val gradleBuildToolsApi = "com.android.tools.build:gradle-api:${Versions.gradle}"
         const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
         const val ktlintGradle = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.ktlint}"
         const val detekt = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${Versions.detektVersion}"

@@ -13,6 +13,7 @@ buildscript {
     }
     dependencies {
         classpath(Libs.Plugins.buildGradle)
+        classpath(Libs.Plugins.gradleBuildToolsApi)
         classpath(Libs.Plugins.kotlinGradle)
         classpath(Libs.Plugins.detekt)
         classpath(Libs.Plugins.detektFormatting)
@@ -52,4 +53,11 @@ tasks.register(Tasks.clean, Delete::class) {
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
     // include("**/special/package/**") // only analyze a sub package inside src/main/kotlin
     exclude("**/special/package/internal/**") // but exclude our legacy internal package
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
 }
