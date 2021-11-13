@@ -1,5 +1,6 @@
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    enableFeaturePreview("VERSION_CATALOGS")
     repositories {
         google()
         mavenCentral()
@@ -9,6 +10,24 @@ dependencyResolutionManagement {
         maven { url 'https://mirrors.tencent.com/repository/maven/thirdparty-snapshots' }
         maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
         maven { url "https://jitpack.io" }
+    }
+
+    versionCatalogs {
+        libs {
+            alias("lifecycle-viewmodel").to("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+            alias("lifecycle-livedata").to("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
+        }
+    }
+    versionCatalogs {
+        libs {
+            version("lifecycle", "2.4.0")
+            alias("lifecycle-viewmodel")
+                    .to("androidx.lifecycle", "lifecycle-viewmodel-ktx")
+                    .versionRef("lifecycle")
+            alias("lifecycle-livedata")
+                    .to("androidx.lifecycle", "lifecycle-livedata-ktx")
+                    .versionRef("lifecycle")
+        }
     }
 }
 rootProject.name = "ComposeUI"

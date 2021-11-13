@@ -43,11 +43,7 @@ tasks.register<io.gitlab.arturbosch.detekt.Detekt>("myDetekt") {
     exclude("resources/")
     exclude("build/")
 }
-tasks.named("check").configure {
-    this.setDependsOn(this.dependsOn.filterNot {
-        it is TaskProvider<*> && it.name == "detekt"
-    })
-}
+
 tasks.register(Tasks.clean, Delete::class) {
     delete(rootProject.buildDir)
 }
