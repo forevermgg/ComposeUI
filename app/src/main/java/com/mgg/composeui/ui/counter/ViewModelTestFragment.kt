@@ -28,9 +28,9 @@ class ViewModelTestFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ViewModelTestViewModel::class.java)
-        viewModel.count.observe(viewLifecycleOwner, {
+        viewModel.count.observe(viewLifecycleOwner) {
             message.text = it.toString()
-        })
+        }
 
         messageBtn.setOnClickListener {
             val data = viewModel.count.value?.plus(1)
