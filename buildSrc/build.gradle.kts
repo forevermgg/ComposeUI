@@ -60,7 +60,7 @@ dependencies {
     // implementation("com.android.tools.build:gradle:7.0.3")
     // implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
     // implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.21")
-    implementation("com.android.tools.build:gradle:7.1.0-alpha12")
+    implementation("com.android.tools.build:gradle:7.1.0-beta03")
     implementation("com.diffplug.spotless:spotless-plugin-gradle:5.16.0")
     implementation("com.google.dagger:hilt-android-gradle-plugin:2.40.1")
     implementation("com.squareup.okhttp3:okhttp:4.9.0")

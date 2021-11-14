@@ -106,7 +106,7 @@ internal fun TestedExtension.configureCommonAndroidOptions() {
 
     defaultConfig {
         minSdk = 23
-        targetSdk = 29
+        targetSdk = 31
     }
 
     sourceSets {
